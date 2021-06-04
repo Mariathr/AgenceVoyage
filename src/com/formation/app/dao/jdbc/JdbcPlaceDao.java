@@ -101,7 +101,7 @@ public class JdbcPlaceDao extends JdbcDao implements PlaceDao<Long, Place> {
     @Override
     public Boolean removePlace(Long aLong) {
         boolean idDeteted = false;
-        String query = "DELETE FROM  place  WHERE id = ?";
+            String query = " DELETE FROM  agence.place  WHERE id = ?";
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setLong(1,aLong);
             idDeteted= pst.execute();

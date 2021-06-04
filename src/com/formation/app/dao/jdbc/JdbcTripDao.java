@@ -70,7 +70,10 @@ public class JdbcTripDao<ID,T> extends JdbcDao implements TripDao<Long, Trip> {
     @Override
     public List<Trip> findAllTrip() {
         List<Trip> listtrip = new ArrayList<>();
-        String query = "SELECT * FROM trip";
+        String query = "SELECT trip.id, trip.idArrivee,t2.name as nomArrivee, trip.idDepart, t1.name as nomDepart, trip.prix" +
+                " FROM agence.trip " +
+                " JOIN agence.place t1 on trip.idDepart = t1.id" +
+                " JOIN agence.place t2 on trip.idArrivee = t2.id ";
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
@@ -79,6 +82,8 @@ public class JdbcTripDao<ID,T> extends JdbcDao implements TripDao<Long, Trip> {
                 trip.setIdArrivee(rs.getLong("idArrivee"));
                 trip.setIdDepart(rs.getLong("idDepart"));
                 trip.setPrix(rs.getFloat("prix"));
+                trip.setNomArrivee(rs.getString("nomArrivee"));
+                trip.setNomDepart(rs.getString("nomDepart"));
                 listtrip.add(trip);
             }
         } catch (SQLException e) {
@@ -115,6 +120,27 @@ public class JdbcTripDao<ID,T> extends JdbcDao implements TripDao<Long, Trip> {
         String query = "DELETE FROM  trip  WHERE id = ?";
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setLong(1,aLong);
+            idDeteted= pst.execute();
+            connection.commit();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+
+        }
+        return idDeteted;
+    }
+    public Boolean removeTripPlace(Long idPlace) {
+        boolean idDeteted = false;
+        String query = "DELETE FROM  trip  WHERE idArrivee = ? or IdDepart =?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setLong(1,idPlace);
+            pst.setLong(2,idPlace);
             idDeteted= pst.execute();
             connection.commit();
 
