@@ -5,11 +5,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public final class ConnectionManager {
-    private static final String URL="jdbc:mysql://localhost:8889/Example";
+    private static final String URL="jdbc:mysql://localhost:8889/agence";
     private static final String USER="root";
     private static final String PASSWORD="root";
+
     //Singleton Instance
     private static Connection connection;
+    //Loading Database Driver
+
+    private ConnectionManager(){
+        //Avoir instantiate
+    }
 
     public static Connection getConnection() throws RuntimeException {
         // Creating conecction to base
@@ -34,7 +40,7 @@ public final class ConnectionManager {
             System.err.println("Driver MySQL introuvable");
         }
     }
-    public static void close(){
+    public static void closeConnection(){
         try {
             connection.close();
         } catch (SQLException e) {

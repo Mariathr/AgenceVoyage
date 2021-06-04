@@ -2,11 +2,17 @@ package com.formation.app.model;
 
 public class Place {
     private Long id;
-    private String nom;
+    private String name;
 
-    public Place(Long id, String nom) {
+    public Place() {
+        this.name = name;
+    }
+    public Place(String nom) {
+        this.name = nom;
+    }
+    public Place( Long id,String nom) {
+        this.name = nom;
         this.id = id;
-        this.nom = nom;
     }
     public Long getId() {
         return id;
@@ -16,12 +22,12 @@ public class Place {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getName() {
+        return name;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
